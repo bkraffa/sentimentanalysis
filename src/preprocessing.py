@@ -1,5 +1,10 @@
 import re
+import pickle
 from spacy_load import load_spacy
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+
 
 #Carregando o spacy
 nlp = load_spacy()
@@ -23,4 +28,17 @@ def preprocessing(df):
     df.reset_index(drop=True, inplace=True)
     return df
 
+def tokenizacao(df):
+    max_features = 3000
+    tokenizer = Tokenizer(num_words=max_features, split=' ')
+    tokenizer.fit_on_texts(df['text'].values)
+    X = tokenizer.texts_to_sequences(df['text'].values)
+    X = pad_sequences(X)
+    with open("models/tokenizacao.pkl", "wb") as file:
+        pickle.dump(obj=tokenizer, file=file)
+    return X
+  
+def separa_datasets(X,Y):
+    X_train, X_test, Y_train, Y_test = train_test_split(X,Y, test_size = 0.2, random_state = 42)
+    return X_train,X_test,Y_train,Y_test
 

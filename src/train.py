@@ -1,5 +1,5 @@
 from data_collect import data_collect
-from preprocessing import preprocessing
+from preprocessing import preprocessing, separa_datasets, tokenizacao, train_test_split
 from spacy_load import load_spacy
 from utils import *
 import os
@@ -13,5 +13,11 @@ if __name__ == "__main__":
     #Pré-Processamento
     df = preprocessing(df)
     save_data(df, 'data/preprocessed_data.csv')
-
-    print(df.head(10))
+    #Tokenizacao
+    X = tokenizacao(df)
+    #Atribuindo a Y a nossa variável alvo
+    Y = (df['sentiment']).values
+    #Dividindo entre treino e teste
+    X_train, X_test, Y_train, Y_test = separa_datasets(X,Y)
+    print(X_train.shape,Y_train.shape)
+    print(X_test.shape,Y_test.shape)
