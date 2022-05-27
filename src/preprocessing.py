@@ -1,10 +1,11 @@
 import re
 import pickle
+import numpy as np
 from spacy_load import load_spacy
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 #Carregando o spacy
 nlp = load_spacy()
@@ -27,6 +28,20 @@ def preprocessing(df):
     df = df[['text','sentiment']]
     df.reset_index(drop=True, inplace=True)
     return df
+
+def vetorizador_tfidf(df):
+    tf_idf = TfidfVectorizer(
+        encoding="latin-1",
+        strip_accents='ascii',
+        lowercase=True, 
+        min_df= 0.01,
+        ngram_range=(1,3)
+    )
+    X = np.array(tf_idf.fit_transform(df["text"]).todense())
+    with open("models/tf_idf.pkl", "wb") as file:
+        pickle.dump(obj=tf_idf, file=file)
+    return X
+
 
 def tokenizacao(df):
     max_features = 3000
