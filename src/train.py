@@ -1,9 +1,10 @@
 from data_collect import data_collect
 from preprocessing import preprocessing, separa_datasets, tokenizacao, vetorizador_tfidf, train_test_split
-from evaluation import evaluate
-from modeling import modeling
+from evaluation import evaluate, evaluate_lstm
+from modeling import modeling, modeling_lstm
 from utils import *
 import os
+import numpy as np
 
 if __name__ == "__main__":
     # Coleta de dados
@@ -14,31 +15,32 @@ if __name__ == "__main__":
     #Pré-Processamento
     df = preprocessing(df)
     save_data(df, 'data/preprocessed_data.csv')
-    #RF e XGB
-    X = vetorizador_tfidf(df)
+    #RF e XGBcd
+    X1 = vetorizador_tfidf(df)
     Y = (df['sentiment']).values
-    X_train, X_test, Y_train, Y_test = separa_datasets(X,Y)
+    X_train1, X_test1, Y_train, Y_test = separa_datasets(X1,Y)
 
 
-    gnb, rfc, xgb = modeling(X_train, Y_train)
+    gnb, rfc, xgb = modeling(X_train1, Y_train)
 
-    # Avaliação
-    acc, f1 = evaluate(gnb, X_test, Y_test)
+    #Pré-processamento do lstm
+    X2 = tokenizacao(df)
+    Y = np.array(pd.get_dummies((df['sentiment']).values))
+    X_train2, X_test2, Y_train, Y_test = separa_datasets(X2,Y)
+
+    #treino do lstm
+
+    lstm = modeling_lstm(X_train2, Y_train)
+
+    # Avaliação modelos
+    acc, f1 = evaluate(gnb, X_test1, Y_test)
     print(f"Naive Bayes: acc = {acc:.3} / f1 = {f1:.3}")
 
-    acc, f1 = evaluate(rfc, X_test, Y_test)
+    acc, f1 = evaluate(rfc, X_test1, Y_test)
     print(f"Random Forest Classification: acc = {acc:.3} / f1 = {f1:.3}")
     
-    acc, f1 = evaluate(rfc, X_test, Y_test)
+    acc, f1 = evaluate(rfc, X_test1, Y_test)
     print(f"XGBoost com Tuning dos Hiperparametros: acc = {acc:.3} / f1 = {f1:.3}")
 
-
-    #LSTM
-    #Tokenizacao
-    #X = tokenizacao(df)
-    #Atribuindo a Y a nossa variável alvo
-    Y = (df['sentiment']).values
-    #Dividindo entre treino e teste
-    #X_train, X_test, Y_train, Y_test = separa_datasets(X,Y)
-    #print(X_train.shape,Y_train.shape)
-    #print(X_test.shape,Y_test.shape)
+    acc, f1 = evaluate_lstm(lstm, X_test2, Y_test)
+    print(f"LSTM: acc = {acc:.3} / f1 = {f1:.3}")

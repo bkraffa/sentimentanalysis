@@ -1,10 +1,13 @@
 import pickle
+import matplotlib.pyplot as plt
 from sklearn.naive_bayes import GaussianNB
 from xgboost import XGBClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
 from scipy.stats import uniform
 from sklearn.model_selection import RandomizedSearchCV
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Embedding, LSTM, SpatialDropout1D
 
 def modeling(X_train, y_train):
     gnb = GaussianNB()
@@ -38,3 +41,23 @@ def modeling(X_train, y_train):
         pickle.dump(obj=xgb, file=file)       
 
     return gnb, rfc, xgb
+
+def modeling_lstm(X_train,y_train):
+    embed_dim = 128
+    lstm_out = 256
+    max_features = 3000
+
+    model = Sequential()
+    model.add(Embedding(max_features, embed_dim,input_length = X_train.shape[1]))
+    model.add(SpatialDropout1D(0.15))
+    model.add(LSTM(lstm_out, dropout=0.15, recurrent_dropout=0.15))
+    model.add(Dense(2,activation='sigmoid'))
+    model.compile(loss = 'categorical_crossentropy', optimizer='adam',metrics = ['accuracy'])
+    print(model.summary())
+    batch_size = 32
+    model.fit(X_train, y_train, epochs = 50, batch_size=batch_size, verbose = 2, shuffle=False)
+
+    with open("models/lstm.pkl", "wb") as file:
+        pickle.dump(obj=model, file=file)   
+
+    return model
