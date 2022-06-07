@@ -53,7 +53,7 @@ def modeling_lstm(X_train,y_train):
     model.add(LSTM(lstm_out, dropout=0.15, recurrent_dropout=0.15))
     model.add(Dense(2,activation='sigmoid'))
     model.compile(loss = 'categorical_crossentropy', optimizer='adam',metrics = ['accuracy'])
-    print(model.summary())
+    ## print(model.summary())
     batch_size = 32
     model.fit(X_train, y_train, epochs = 5, batch_size=batch_size, verbose = 0, shuffle=False)
 
