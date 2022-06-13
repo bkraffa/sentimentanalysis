@@ -1,5 +1,7 @@
 from sklearn.metrics import accuracy_score, f1_score, classification_report, confusion_matrix, roc_curve, auc
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 def evaluate(model, X_test, y_test):
@@ -35,3 +37,28 @@ def evaluate_lstm(model, X_test,Y_test):
     resultados  = resultados.reshape(-1,1)
  
     return accuracy_score(Y_test_argmax, resultados), f1_score(Y_test_argmax, resultados, pos_label=1)
+
+def figura_matriz_confusao(model, X_test, y_test):
+    Y_pred = model.predict(X_test)
+    conf_matrix = confusion_matrix(y_test, Y_pred)
+    fig = plt.figure(figsize=(6, 6))
+    sns.heatmap(conf_matrix, annot=True, fmt="d", cmap = 'GnBu');
+    model_name = type(model).__name__
+    plt.title(f"Matriz de confusão {model_name}")
+    plt.ylabel('Classe Correta')
+    plt.xlabel('Classe Prevista')
+    return fig
+
+def figura_matriz_confusao_lstm(model, X_test, y_test):
+
+    predict_x=model.predict(X_test) 
+    classes_x=np.argmax(predict_x,axis=1)
+    y_test_max=np.argmax(y_test,axis=1) 
+    conf_matrix = confusion_matrix(y_test_max, classes_x)
+    fig = plt.figure(figsize=(6, 6))
+    sns.heatmap(conf_matrix, annot=True, fmt="d", cmap = 'GnBu');
+    model_name = type(model).__name__
+    plt.title(f"Matriz de confusão {model_name}")
+    plt.ylabel('Classe Correta')
+    plt.xlabel('Classe Prevista')
+    return fig

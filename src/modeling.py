@@ -57,7 +57,7 @@ def modeling_lstm(X_train,y_train):
     batch_size = 32
     model.fit(X_train, y_train, epochs = 5, batch_size=batch_size, verbose = 0, shuffle=False)
 
-    with open("models/lstm.pkl", "wb") as file:
-        pickle.dump(obj=model, file=file)   
+    path = 'models/lstm.h5'
+    model.save(path)
 
     return model

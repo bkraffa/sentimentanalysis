@@ -1,6 +1,8 @@
+from matplotlib.pyplot import savefig
+from sklearn.metrics import confusion_matrix
 from data_collect import data_collect
 from preprocessing import preprocessing, separa_datasets, tokenizacao, vetorizador_tfidf, train_test_split
-from evaluation import evaluate, evaluate_lstm
+from evaluation import evaluate, evaluate_lstm, figura_matriz_confusao, figura_matriz_confusao_lstm
 from modeling import modeling, modeling_lstm
 from utils import *
 import os
@@ -35,12 +37,20 @@ if __name__ == "__main__":
     # Avaliação modelos
     acc, f1 = evaluate(gnb, X_test1, Y_test1)
     print(f"Naive Bayes: acc = {acc:.3} / f1 = {f1:.3}")
+    matriz_confusao = figura_matriz_confusao(gnb, X_test1, Y_test1)
+    save_plot(matriz_confusao,'plots/gnb.jpg')
 
     acc, f1 = evaluate(rfc, X_test1, Y_test1)
     print(f"Random Forest Classification: acc = {acc:.3} / f1 = {f1:.3}")
+    matriz_confusao = figura_matriz_confusao(rfc, X_test1, Y_test1)
+    save_plot(matriz_confusao,'plots/rfc.jpg')
     
-    acc, f1 = evaluate(rfc, X_test1, Y_test1)
+    acc, f1 = evaluate(xgb, X_test1, Y_test1)
     print(f"XGBoost com Tuning dos Hiperparametros: acc = {acc:.3} / f1 = {f1:.3}")
+    matriz_confusao = figura_matriz_confusao(xgb, X_test1, Y_test1)
+    save_plot(matriz_confusao,'plots/xgb.jpg')
 
     acc, f1 = evaluate_lstm(lstm, X_test2, Y_test2)
     print(f"LSTM: acc = {acc:.3} / f1 = {f1:.3}")
+    matriz_confusao = figura_matriz_confusao_lstm(lstm, X_test2, Y_test2)
+    save_plot(matriz_confusao,'plots/lstm.jpg')

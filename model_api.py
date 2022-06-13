@@ -2,6 +2,7 @@ from fastapi import FastAPI
 import pickle
 from pydantic import BaseModel
 import numpy as np
+import keras
 
 class Item(BaseModel):
     text: str
@@ -18,8 +19,8 @@ with open("models/xgb.pkl", "rb") as file:
 with open("models/tf_idf.pkl", "rb") as file:
     tfidf = pickle.load(file)
 
-with open("models/lstm.pkl", "rb") as file:
-    lstm = pickle.load(file)
+path = 'models/lstm.h5'
+lstm = keras.models.load_model(path)
 
 with open("models/tokenizacao.pkl", "rb") as file:
     tokenizer = pickle.load(file)
