@@ -4,8 +4,10 @@ WORKDIR /sentimentanalysis
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-RUN python -m spacy download pt_core_news_lg
 
 COPY . .
 
-CMD ["uvicorn", "model_api:app", "--host", "0.0.0.0"]
+CMD ["sh", "-c", "uvicorn model_api:app --host 0.0.0.0 --port $PORT"]
+
+#docker build . -t sentimentanalysis --no-cache
+#docker run -p 8000:4000 -e PORT=4000 sentiment
