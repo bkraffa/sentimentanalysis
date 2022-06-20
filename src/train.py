@@ -27,6 +27,7 @@ if __name__ == "__main__":
 
     #Pré-processamento do lstm
     X2 = tokenizacao(df)
+    save_data(pd.DataFrame(X2),'data/preprocessed_datalstm.csv')
     Y2 = np.array(pd.get_dummies((df['sentiment']).values))
     X_train2, X_test2, Y_train2, Y_test2 = separa_datasets(X2,Y2)
 
