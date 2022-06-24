@@ -85,7 +85,7 @@ prometheus-client==0.14.1
 prompt-toolkit==3.0.29
 protobuf==3.19.4
 psutil==5.9.1
-pt-core-news-lg @ https://github.com/explosion/spacy-models/releases/download/pt_core_news_lg-3.3.0/pt_core_news_lg-3.3.0-py3-none-any.whl
+pt-core-news-sm @ https://github.com/explosion/spacy-models/releases/download/pt_core_news_sm-3.3.0/pt_core_news_sm-3.3.0-py3-none-any.whl
 pure-eval==0.2.2
 pyarrow==8.0.0
 pyasn1==0.4.8
@@ -145,7 +145,6 @@ tzdata==2022.1
 tzlocal==4.2
 urllib3==1.26.9
 uvicorn==0.17.6
-uvloop==0.16.0
 wasabi==0.9.1
 watchdog==2.1.9
 wcwidth==0.2.5

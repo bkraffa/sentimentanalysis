@@ -50,7 +50,7 @@ def predict(model: str, item: Item):
         X = np.flip(X)
         pred = lstm.predict(X)
         pred = np.argmax(pred)
-        
+ 
     elif model == "naive_bayes":
         X = tfidf.transform([item.text]).toarray()
         pred = gnb.predict(X)
