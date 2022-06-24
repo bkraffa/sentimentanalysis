@@ -13,7 +13,7 @@ RUN chmod +x /sentimento/start.bash
 #codigo acima pra rodar localmente, depois é necessário rodar o streamlit run streamlit.py
 
 CMD ["/bin/bash", "-c", "/sentimento/start.bash && sleep 10 && streamlit run streamlit.py --server.port $PORT"]
-#codigo acima é pra o deploy em produção, no dyno free do heroku a memória não é suficiente pra o push na web
+#codigo acima é pra o deploy em produção
 
 
 #docker build . -t sentiment:latest
