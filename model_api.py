@@ -5,7 +5,6 @@ import numpy as np
 import keras
 from src.spacy_load import load_spacy
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-import tensorflow as tf
 import re
 
 nlp = load_spacy()

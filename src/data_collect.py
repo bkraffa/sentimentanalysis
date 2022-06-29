@@ -1,7 +1,19 @@
 import pandas as pd
-def data_collect():
-    df = pd.read_json('..\data\corpusTT.json', orient = 'index')
-    return df
+
+
+def data_collect_treino():
+    ttsbr = pd.read_json('..\data\corpusTT.json', orient='index')
+    ttsbr_treino = ttsbr.loc[ttsbr['group'] == 'train',
+                            ['text', 'sentiment']].reset_index(drop=True)
+    return ttsbr_treino
+
+
+def data_collect_teste():
+    ttsbr = pd.read_json('..\data\corpusTT.json', orient='index')
+    ttsbr_teste = ttsbr.loc[ttsbr['group'] == 'test',
+                            ['text', 'sentiment']].reset_index(drop=True)
+    return ttsbr_teste
+
 
 ''' Dataset utilizado para o treino 1: 
   @InProceedings{BRUM18.389,
